@@ -1,0 +1,30 @@
+vale por si no entiendes lo que he puesto te dejo este .txt, puedes borrarlo una vez que lo has leido si quieres
+
+int main() {
+    char tablero[N][N];
+    creartablero(tablero);
+
+    bool gameover = false;
+    while (!gameover) {
+        printtablero(tablero);
+
+        if (moverFicha(tablero)) {
+            turno++; 
+        }
+
+        system("cls");
+    }
+
+    return 0;
+}
+para empezar en el main he puesto con funciones ya que tu no lo habias hecho, de esa forma no podiamos hacer cambios
+permanentes
+
+bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
+
+fi = fila inicial   
+ci = columna inicial        | si quieres puedes cambiar el nombre da igual
+ff = fila final
+cf = columna final
+
+si no preguntame en was o discord

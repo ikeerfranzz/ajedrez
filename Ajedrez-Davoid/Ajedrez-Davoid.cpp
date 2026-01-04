@@ -2,6 +2,8 @@
 #define N 8
 using namespace std;
 
+
+// si no lo ves tienes un txt en "Archivos de recursos" si no entiendes alguna cosa
 int turno = 0;
 
 void creartablero(char tablero[N][N]) {
