@@ -125,9 +125,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ajedrez-Davoid.cpp" />
+    <ClCompile Include="fichas.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="leeme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Func.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

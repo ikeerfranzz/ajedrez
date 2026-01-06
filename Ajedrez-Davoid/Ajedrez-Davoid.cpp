@@ -1,13 +1,13 @@
 #include <iostream>
-#define N 8
+
+#include "Func.h"
+
 using namespace std;
-
-
-// si no lo ves tienes un txt en "Archivos de recursos" si no entiendes alguna cosa
 int turno = 0;
+// si no lo ves tienes un txt en "Archivos de recursos" si no entiendes alguna cosa
+
 
 void creartablero(char tablero[N][N]) {
-    // Letras del tablero
     char letras[N][N] = {
         {'t','h','b','k','q','b','h','t'},
         {'p','p','p','p','p','p','p','p'},
@@ -19,7 +19,6 @@ void creartablero(char tablero[N][N]) {
         {'T','H','B','Q','K','B','H','T'}
     };
 
-    //Asignacion de las letras al tablero cuando lo creamos
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             tablero[i][j] = letras[i][j];
@@ -27,53 +26,8 @@ void creartablero(char tablero[N][N]) {
     }
 }
 
-bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
-    char peon = tablero[fi][ci];
 
-    // PEÓN BLANCO
-    if (peon == 'P' && turno % 2 == 0) {
 
-        // Movimiento normal
-        if (ff == fi - 1 && cf == ci && tablero[ff][cf] == '*') {
-            tablero[ff][cf] = 'P';
-            tablero[fi][ci] = '*';
-            return true;
-        }
-
-        // Doble movimiento inicial
-        if (fi == 6 && ff == fi - 2 && cf == ci &&
-            tablero[fi - 1][ci] == '*' &&
-            tablero[ff][cf] == '*') {
-
-            tablero[ff][cf] = 'P';
-            tablero[fi][ci] = '*';
-            return true;
-        }
-    }
-
-    // PEÓN NEGRO
-    if (peon == 'p' && turno % 2 != 0) {
-
-        // Movimiento normal
-        if (ff == fi + 1 && cf == ci && tablero[ff][cf] == '*') {
-            tablero[ff][cf] = 'p';
-            tablero[fi][ci] = '*';
-            return true;
-        }
-
-        // Doble movimiento inicial
-        if (fi == 1 && ff == fi + 2 && cf == ci &&
-            tablero[fi + 1][ci] == '*' &&
-            tablero[ff][cf] == '*') {
-
-            tablero[ff][cf] = 'p';
-            tablero[fi][ci] = '*';
-            return true;
-        }
-    }
-
-    return false;
-}
 
 bool moverFicha(char tablero[N][N]) {
     int fi, ci, ff, cf;
@@ -109,6 +63,10 @@ bool moverFicha(char tablero[N][N]) {
 
     if (pieza == 'P' || pieza == 'p') {
         return moverPeon(tablero, fi, ci, ff, cf);
+    }
+
+    if (pieza == 'T' || pieza == 't') {
+        return moverTorre(tablero, fi, ci, ff, cf);
     }
 
 
