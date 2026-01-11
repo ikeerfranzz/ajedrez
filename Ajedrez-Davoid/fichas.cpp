@@ -1,5 +1,5 @@
 #include "Func.h"
-
+#include <math.h>
 
 bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
     char peon = tablero[fi][ci];
@@ -41,7 +41,7 @@ bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
             tablero[fi][ci] = '*';
             return true;
         }
-        
+
         // Doble movimiento inicial
         if (fi == 1 && ff == fi + 2 && cf == ci &&
             tablero[fi + 1][ci] == '*' &&
@@ -107,5 +107,78 @@ bool moverTorre(char tablero[N][N], int fi, int ci, int ff, int cf) {
 
     tablero[ff][cf] = torre;
     tablero[fi][ci] = '*';
+    return true;
+}
+
+bool moverCaballo(char tablero[N][N], int fi, int ci, int ff, int cf) {
+    char caballo = tablero[fi][ci];
+
+    // Turno correcto
+    if ((caballo == 'H' && turno % 2 != 0) ||
+        (caballo == 'h' && turno % 2 == 0)) {
+        return false;
+    }
+
+
+    if (ff == fi - 2 && cf == ci + 1 ||
+        ff == fi - 2 && cf == ci - 1 ||
+        ff == fi - 1 && cf == ci + 2 ||
+        ff == fi + 1 && cf == ci + 2 ||
+        ff == fi - 1 && cf == ci - 2 ||
+        ff == fi + 1 && cf == ci - 2 ||
+        ff == fi + 2 && cf == ci - 1 ||
+        ff == fi + 2 && cf == ci + 1
+        )
+    {
+        //captura de pie
+        char destino = tablero[ff][cf];
+        if (destino != '*') {
+            if ((caballo == 'H' && destino >= 'A' && destino <= 'Z') ||
+                (caballo == 'h' && destino >= 'a' && destino <= 'z')) {
+                return false;
+            }
+        }
+        tablero[ff][cf] = 'H';
+        tablero[fi][ci] = '*';
+        return true;
+    }
+    return true;
+}
+
+bool moverAlfil(char tablero[N][N], int fi, int ci, int ff, int cf) {
+    if (fi == ff && ci == cf) return false;
+
+    char alfil = tablero[fi][ci];
+
+    // Turno correcto
+    if ((alfil == 'B' && turno % 2 != 0) ||
+        (alfil == 'b' && turno % 2 == 0)) {
+        return false;
+    }
+
+    // Solo diagonales
+    if (abs(ff - fi) != abs(cf - ci)) {
+        return false;
+    }
+    //pieza destino valida
+    char destino = tablero[ff][cf];
+    if (destino != '*') {
+        if ((alfil == 'B' && destino >= 'A' && destino <= 'Z') ||
+            (alfil == 'b' && destino >= 'a' && destino <= 'z')) {
+            return false;
+        }
+    }
+
+    //camino libre
+    int movimientoFila = (ff > fi) ? 1 : -1;
+    int movimientoCol = (cf > ci) ? 1 : -1;
+    int pasos = abs(ff - fi);
+    for (int i = 1; i < pasos; ++i) {
+        if (tablero[fi + i * movimientoFila][ci + i * movimientoCol] != '*') return false;
+    }
+
+    tablero[ff][cf] = alfil;
+    tablero[fi][ci] = '*';
+
     return true;
 }

@@ -31,7 +31,7 @@ void creartablero(char tablero[N][N]) {
 
 bool moverFicha(char tablero[N][N]) {
     int fi, ci, ff, cf;
-    
+
     //comprovacion de turno inicial
     cout << (turno % 2 == 0 ? "Turno BLANCAS\n" : "Turno NEGRAS\n");
 
@@ -69,6 +69,12 @@ bool moverFicha(char tablero[N][N]) {
         return moverTorre(tablero, fi, ci, ff, cf);
     }
 
+    if (pieza == 'H' || pieza == 'h') {
+        return moverCaballo(tablero, fi, ci, ff, cf);
+    }
+    if (pieza == 'B' || pieza == 'b') {
+        return moverAlfil(tablero, fi, ci, ff, cf);
+    }
 
     return false;
 }
@@ -101,7 +107,7 @@ int main() {
         printtablero(tablero);
 
         if (moverFicha(tablero)) {
-            turno++; 
+            turno++;
         }
 
         system("cls");
