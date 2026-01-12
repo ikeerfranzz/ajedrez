@@ -75,6 +75,12 @@ bool moverFicha(char tablero[N][N]) {
     if (pieza == 'B' || pieza == 'b') {
         return moverAlfil(tablero, fi, ci, ff, cf);
     }
+    if (pieza == 'Q' || pieza == 'q') {
+        return moverReina(tablero, fi, ci, ff, cf);
+    }
+    if (pieza == 'K' || pieza == 'k') {
+        return moverRei(tablero, fi, ci, ff, cf);
+    }
 
     return false;
 }

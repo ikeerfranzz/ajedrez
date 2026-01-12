@@ -8,3 +8,5 @@ bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf);
 bool moverTorre(char tablero[N][N], int fi, int ci, int ff, int cf);
 bool moverCaballo(char tablero[N][N], int fi, int ci, int ff, int cf);
 bool moverAlfil(char tablero[N][N], int fi, int ci, int ff, int cf);
+bool moverReina(char tablero[N][N], int fi, int ci, int ff, int cf);
+bool moverRei(char tablero[N][N], int fi, int ci, int ff, int cf);
