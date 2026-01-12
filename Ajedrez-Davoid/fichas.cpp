@@ -23,7 +23,7 @@ bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
             return true;
         }
 
-        // Captura de peon
+        // Captura de ficha
         if (ff == fi - 1 && (cf == ci - 1 || cf == ci + 1) &&
             tablero[ff][cf] >= 'a' && tablero[ff][cf] <= 'z') {
 
@@ -96,7 +96,7 @@ bool moverTorre(char tablero[N][N], int fi, int ci, int ff, int cf) {
         }
     }
 
-    //captura de pie
+    //Captura de ficha
     char destino = tablero[ff][cf];
     if (destino != '*') {
         if ((torre == 'T' && destino >= 'A' && destino <= 'Z') ||
@@ -130,7 +130,7 @@ bool moverCaballo(char tablero[N][N], int fi, int ci, int ff, int cf) {
         ff == fi + 2 && cf == ci + 1
         )
     {
-        //captura de pie
+        //captura de caballo
         char destino = tablero[ff][cf];
         if (destino != '*') {
             if ((caballo == 'H' && destino >= 'A' && destino <= 'Z') ||
@@ -160,7 +160,7 @@ bool moverAlfil(char tablero[N][N], int fi, int ci, int ff, int cf) {
     if (abs(ff - fi) != abs(cf - ci)) {
         return false;
     }
-    //pieza destino valida
+    //Captura de ficha
     char destino = tablero[ff][cf];
     if (destino != '*') {
         if ((alfil == 'B' && destino >= 'A' && destino <= 'Z') ||
@@ -223,7 +223,7 @@ bool moverReina(char tablero[N][N], int fi, int ci, int ff, int cf) {
         }
     }
 
-    // Pieza destino válida
+    // Captura de ficha
     char destino = tablero[ff][cf];
     if (destino != '*') {
         if ((reina == 'Q' && destino >= 'A' && destino <= 'Z') ||
@@ -256,7 +256,7 @@ bool moverRei(char tablero[N][N], int fi, int ci, int ff, int cf) {
         return false;
     }
 
-    // Pieza destino válida
+    // Captura de ficha
     char destino = tablero[ff][cf];
     if (destino != '*') {
         if ((rei == 'K' && destino >= 'A' && destino <= 'Z') ||
