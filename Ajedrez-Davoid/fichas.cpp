@@ -138,11 +138,11 @@ bool moverCaballo(char tablero[N][N], int fi, int ci, int ff, int cf) {
                 return false;
             }
         }
-        tablero[ff][cf] = 'H';
+        tablero[ff][cf] = caballo;
         tablero[fi][ci] = '*';
         return true;
     }
-    return true;
+    return false;
 }
 
 bool moverAlfil(char tablero[N][N], int fi, int ci, int ff, int cf) {
@@ -169,7 +169,7 @@ bool moverAlfil(char tablero[N][N], int fi, int ci, int ff, int cf) {
         }
     }
 
-    //camino libre
+    // Camino libre
     int movimientoFila = (ff > fi) ? 1 : -1;
     int movimientoCol = (cf > ci) ? 1 : -1;
     int pasos = abs(ff - fi);
@@ -177,7 +177,7 @@ bool moverAlfil(char tablero[N][N], int fi, int ci, int ff, int cf) {
         if (tablero[fi + i * movimientoFila][ci + i * movimientoCol] != '*') return false;
     }
 
-    tablero[ff][cf] = alfil;
+    tablero[ff][cf] = alfil;    
     tablero[fi][ci] = '*';
 
     return true;
@@ -213,8 +213,8 @@ bool moverReina(char tablero[N][N], int fi, int ci, int ff, int cf) {
             }
         }
     }
-    //camino libre
-    else if (abs(ff - fi) != abs(cf - ci)) {
+    // Camino libre
+    else if (abs(ff - fi) == abs(cf - ci)) {
         int movimientoFila = (ff > fi) ? 1 : -1;
         int movimientoCol = (cf > ci) ? 1 : -1;
         int pasos = abs(ff - fi);
@@ -270,3 +270,143 @@ bool moverRei(char tablero[N][N], int fi, int ci, int ff, int cf) {
     return true;
 }
 
+
+// funcion de jaque con algunas ayudas de chat gpt, puesto en la parte que lo hemos necesitado
+bool enJaque(char tablero[N][N], bool blancas) {
+
+    int filar = -1, columnar = -1;
+    char rey = blancas ? 'K' : 'k';
+
+    // Buscamos la posicion del rei en el tablero
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (tablero[i][j] == rey) {
+                filar = i;
+                columnar = j;
+                break;
+            }
+        }
+    }
+
+    if (filar == -1) return false;
+
+    // Pieza creando el jaque
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+
+            char pieza = tablero[i][j];
+            if (pieza == '*') continue;
+
+            // Ignorar piezas aliadas
+            if (blancas && pieza >= 'A' && pieza <= 'Z') continue;
+            if (!blancas && pieza >= 'a' && pieza <= 'z') continue;
+
+            int df = filar - i;
+            int dc = columnar - j;
+
+            // Peon
+            if (pieza == 'p' && blancas) {
+                if (df == 1 && (dc == 1 || dc == -1)) return true;
+            }
+            if (pieza == 'P' && !blancas) {
+                if (df == -1 && (dc == 1 || dc == -1)) return true;
+            }
+
+            // Caballo
+            if (pieza == 'h' || pieza == 'H') {
+                if ((abs(df) == 2 && abs(dc) == 1) || (abs(df) == 1 && abs(dc) == 2)) return true;
+            }
+
+            // Torre o Reina (horizontal/vertical)
+            if (pieza == 't' || pieza == 'T' || pieza == 'q' || pieza == 'Q') {
+                if (df == 0 || dc == 0) {
+                    int fila_ataque = (df == 0) ? 0 : (df > 0 ? 1 : -1);
+                    int columna_ataque = (dc == 0) ? 0 : (dc > 0 ? 1 : -1);
+                    int f = i + fila_ataque, c = j + columna_ataque;
+                    while (f != filar || c != columnar) {
+                        if (tablero[f][c] != '*') break;
+                        f += fila_ataque;
+                        c += columna_ataque;
+                    }
+                    if (f == filar && c == columnar) return true;
+                }
+            }
+
+            // Alfil o Reina (diagonal)
+            if (pieza == 'b' || pieza == 'B' || pieza == 'q' || pieza == 'Q') {
+                if (abs(df) == abs(dc)) {
+                    int fila_ataque = df > 0 ? 1 : -1;
+                    int columna_ataque = dc > 0 ? 1 : -1;
+                    int f = i + fila_ataque, c = j + columna_ataque;
+                    while (f != filar && c != columnar) {
+                        if (tablero[f][c] != '*') break;
+                        f += fila_ataque;
+                        c += columna_ataque;
+                    }
+                    if (f == filar && c == columnar) return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+
+
+bool jaqueMate(char tablero[N][N], bool blancas) {
+
+    // Si no hay jaque pues nada
+    if (!enJaque(tablero, blancas)) return false;
+
+    int filar = -1, columnar = -1;
+    char rey = blancas ? 'K' : 'k';
+
+    // buscamos al rey
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (tablero[i][j] == rey) {
+                filar = i;
+                columnar = j;
+            }
+        }
+    }
+
+    // comrpobamos si hay jaque en todas las posiciones alrededor del rei
+    for (int df = -1; df <= 1; df++) {
+        for (int dc = -1; dc <= 1; dc++) {
+
+            if (df == 0 && dc == 0) continue;
+
+            int nf = filar + df;
+            int nc = columnar + dc;
+
+            // Fuera del tablero
+            if (nf < 0 || nf >= N || nc < 0 || nc >= N) continue;
+
+            // No puede moverse a una casilla con pieza aliada
+            if (blancas && tablero[nf][nc] >= 'A' && tablero[nf][nc] <= 'Z')
+                continue;
+
+            if (!blancas && tablero[nf][nc] >= 'a' && tablero[nf][nc] <= 'z')
+                continue;
+
+            // simulamos otro tablero para comprobar si hay mate o no
+            char copia[N][N];
+            for (int i = 0; i < N; i++)
+                for (int j = 0; j < N; j++)
+                    copia[i][j] = tablero[i][j];
+
+            copia[nf][nc] = rey;
+            copia[filar][columnar] = '*';
+
+            // comprobamos si es mate de blancas
+            if (!enJaque(copia, blancas)) {
+                return false;
+            }
+        }
+    }
+
+    // si no, es de negras
+    return true;
+}

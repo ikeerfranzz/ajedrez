@@ -3,6 +3,7 @@
 #include "Func.h"
 
 using namespace std;
+
 int turno = 0;
 // si no lo ves tienes un txt en "Archivos de recursos" si no entiendes alguna cosa
 
@@ -25,9 +26,6 @@ void creartablero(char tablero[N][N]) {
         }
     }
 }
-
-
-
 
 bool moverFicha(char tablero[N][N]) {
     int fi, ci, ff, cf;
@@ -104,6 +102,19 @@ void printtablero(char tablero[N][N]) {
     }
 }
 
+bool reyMuerto(char tablero[N][N], bool blancas) {
+    char rey = blancas ? 'K' : 'k';
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (tablero[i][j] == rey) {
+                return false; // El rey sigue vivo
+            }
+        }
+    }
+    return true; // No se encontró el rey
+}
+
 int main() {
     char tablero[N][N];
     creartablero(tablero);
@@ -115,8 +126,36 @@ int main() {
         if (moverFicha(tablero)) {
             turno++;
         }
-
         system("cls");
+        if (enJaque(tablero, true)) {
+            cout << "!Rey blanco en jaque!" << endl << endl;
+        }
+
+        if (enJaque(tablero, false)) {
+            cout << "!Rey negro en jaque!" << endl << endl;
+        }
+        if (jaqueMate(tablero, true)) {
+            printtablero(tablero);
+            cout << "!Jaque mate, Ganan las negras!\n";
+            break;
+        }
+
+        if (jaqueMate(tablero, false)) {
+            printtablero(tablero);
+            cout << "!Jaque mate, Ganan las blancas !\n";
+            break;
+        }
+        if (reyMuerto(tablero, true)) {
+            printtablero(tablero);
+            cout << "Rey blanco fue capturado ganan las negras\n";
+            break;
+        }
+
+        if (reyMuerto(tablero, false)) {
+            printtablero(tablero);
+            cout << "Rey negro capturado ganan las blancas\n";
+            break;
+        }
     }
 
     return 0;
