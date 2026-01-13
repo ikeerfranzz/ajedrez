@@ -134,17 +134,6 @@ int main() {
         if (enJaque(tablero, false)) {
             cout << "!Rey negro en jaque!" << endl << endl;
         }
-        if (jaqueMate(tablero, true)) {
-            printtablero(tablero);
-            cout << "!Jaque mate, Ganan las negras!\n";
-            break;
-        }
-
-        if (jaqueMate(tablero, false)) {
-            printtablero(tablero);
-            cout << "!Jaque mate, Ganan las blancas !\n";
-            break;
-        }
         if (reyMuerto(tablero, true)) {
             printtablero(tablero);
             cout << "Rey blanco fue capturado ganan las negras\n";

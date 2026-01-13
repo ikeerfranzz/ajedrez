@@ -3,6 +3,7 @@
 
 bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
     char peon = tablero[fi][ci];
+
     // peon blanco
     if (peon == 'P' && turno % 2 == 0) {
 
@@ -10,6 +11,10 @@ bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
         if (ff == fi - 1 && cf == ci && tablero[ff][cf] == '*') {
             tablero[ff][cf] = 'P';
             tablero[fi][ci] = '*';
+
+            // Promocion a reina
+            if (ff == 0) tablero[ff][cf] = 'Q';
+
             return true;
         }
 
@@ -23,15 +28,20 @@ bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
             return true;
         }
 
-        // Captura de ficha
+        // Captura
         if (ff == fi - 1 && (cf == ci - 1 || cf == ci + 1) &&
             tablero[ff][cf] >= 'a' && tablero[ff][cf] <= 'z') {
 
             tablero[ff][cf] = 'P';
             tablero[fi][ci] = '*';
+
+            // Promocion a reina
+            if (ff == 0) tablero[ff][cf] = 'Q';
+
             return true;
         }
     }
+
     // peon negro
     if (peon == 'p' && turno % 2 != 0) {
 
@@ -39,6 +49,10 @@ bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
         if (ff == fi + 1 && cf == ci && tablero[ff][cf] == '*') {
             tablero[ff][cf] = 'p';
             tablero[fi][ci] = '*';
+
+            // Promocion a reina
+            if (ff == N - 1) tablero[ff][cf] = 'q';
+
             return true;
         }
 
@@ -52,17 +66,23 @@ bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
             return true;
         }
 
-        // Captura de ficha
+        // Captura
         if (ff == fi + 1 && (cf == ci - 1 || cf == ci + 1) &&
             tablero[ff][cf] >= 'A' && tablero[ff][cf] <= 'Z') {
 
             tablero[ff][cf] = 'p';
             tablero[fi][ci] = '*';
+
+            // Promocion a reina
+            if (ff == N - 1) tablero[ff][cf] = 'q';
+
             return true;
         }
     }
+
     return false;
 }
+
 
 bool moverTorre(char tablero[N][N], int fi, int ci, int ff, int cf) {
     if (fi == ff && ci == cf) return false;
@@ -348,65 +368,6 @@ bool enJaque(char tablero[N][N], bool blancas) {
             }
         }
     }
-
     return false;
 }
 
-
-
-bool jaqueMate(char tablero[N][N], bool blancas) {
-
-    // Si no hay jaque pues nada
-    if (!enJaque(tablero, blancas)) return false;
-
-    int filar = -1, columnar = -1;
-    char rey = blancas ? 'K' : 'k';
-
-    // buscamos al rey
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            if (tablero[i][j] == rey) {
-                filar = i;
-                columnar = j;
-            }
-        }
-    }
-
-    // comrpobamos si hay jaque en todas las posiciones alrededor del rei
-    for (int df = -1; df <= 1; df++) {
-        for (int dc = -1; dc <= 1; dc++) {
-
-            if (df == 0 && dc == 0) continue;
-
-            int nf = filar + df;
-            int nc = columnar + dc;
-
-            // Fuera del tablero
-            if (nf < 0 || nf >= N || nc < 0 || nc >= N) continue;
-
-            // No puede moverse a una casilla con pieza aliada
-            if (blancas && tablero[nf][nc] >= 'A' && tablero[nf][nc] <= 'Z')
-                continue;
-
-            if (!blancas && tablero[nf][nc] >= 'a' && tablero[nf][nc] <= 'z')
-                continue;
-
-            // simulamos otro tablero para comprobar si hay mate o no
-            char copia[N][N];
-            for (int i = 0; i < N; i++)
-                for (int j = 0; j < N; j++)
-                    copia[i][j] = tablero[i][j];
-
-            copia[nf][nc] = rey;
-            copia[filar][columnar] = '*';
-
-            // comprobamos si es mate de blancas
-            if (!enJaque(copia, blancas)) {
-                return false;
-            }
-        }
-    }
-
-    // si no, es de negras
-    return true;
-}
