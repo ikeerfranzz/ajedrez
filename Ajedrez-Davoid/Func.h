@@ -11,4 +11,5 @@ bool moverAlfil(char tablero[N][N], int fi, int ci, int ff, int cf);
 bool moverReina(char tablero[N][N], int fi, int ci, int ff, int cf);
 bool moverRei(char tablero[N][N], int fi, int ci, int ff, int cf);
 bool enJaque(char tablero[N][N], bool blancas);
-bool jaqueMate(char tablero[N][N], bool blancas);
+bool reyMuerto(char tablero[N][N], bool blancas);
+bool moverFicha(char tablero[N][N]);

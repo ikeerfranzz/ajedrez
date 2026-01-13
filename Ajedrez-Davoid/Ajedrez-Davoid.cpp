@@ -5,7 +5,6 @@
 using namespace std;
 
 int turno = 0;
-// si no lo ves tienes un txt en "Archivos de recursos" si no entiendes alguna cosa
 
 
 void creartablero(char tablero[N][N]) {
@@ -30,16 +29,16 @@ void creartablero(char tablero[N][N]) {
 bool moverFicha(char tablero[N][N]) {
     int fi, ci, ff, cf;
 
-    //comprovacion de turno inicial
+    //comprovacion de turno
     cout << (turno % 2 == 0 ? "Turno BLANCAS\n" : "Turno NEGRAS\n");
 
-    //pedimas al usuario que ficha quiere mover
+    // pedimas al usuario que ficha quiere mover
     cout << "Fila origen: ";
     cin >> fi;
     cout << "Columna origen: ";
     cin >> ci;
 
-    //pedimos al usuario a donde quiere mover la ficha selecionada
+    // pedimos al usuario a donde quiere mover la ficha selecionada
     cout << "Fila destino: ";
     cin >> ff;
     cout << "Columna destino: ";
@@ -102,18 +101,7 @@ void printtablero(char tablero[N][N]) {
     }
 }
 
-bool reyMuerto(char tablero[N][N], bool blancas) {
-    char rey = blancas ? 'K' : 'k';
 
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            if (tablero[i][j] == rey) {
-                return false; // El rey sigue vivo
-            }
-        }
-    }
-    return true; // No se encontró el rey
-}
 
 int main() {
     char tablero[N][N];

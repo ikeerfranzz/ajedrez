@@ -1,6 +1,7 @@
 #include "Func.h"
 #include <math.h>
 
+
 bool moverPeon(char tablero[N][N], int fi, int ci, int ff, int cf) {
     char peon = tablero[fi][ci];
 
@@ -233,7 +234,7 @@ bool moverReina(char tablero[N][N], int fi, int ci, int ff, int cf) {
             }
         }
     }
-    // Camino libre
+    // Movimiento diagonal, tipo alfil
     else if (abs(ff - fi) == abs(cf - ci)) {
         int movimientoFila = (ff > fi) ? 1 : -1;
         int movimientoCol = (cf > ci) ? 1 : -1;
@@ -371,3 +372,15 @@ bool enJaque(char tablero[N][N], bool blancas) {
     return false;
 }
 
+bool reyMuerto(char tablero[N][N], bool blancas) {
+    char rey = blancas ? 'K' : 'k';
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (tablero[i][j] == rey) {
+                return false; // El rey sigue vivo
+            }
+        }
+    }
+    return true; // No se encontró el rey
+}
