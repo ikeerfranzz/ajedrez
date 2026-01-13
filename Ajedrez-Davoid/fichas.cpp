@@ -271,7 +271,7 @@ bool moverRei(char tablero[N][N], int fi, int ci, int ff, int cf) {
 }
 
 
-// funcion de jaque con algunas ayudas de chat gpt, puesto en la parte que lo hemos necesitado
+// (idea referenciada de chatgpt)
 bool enJaque(char tablero[N][N], bool blancas) {
 
     int filar = -1, columnar = -1;
@@ -312,7 +312,7 @@ bool enJaque(char tablero[N][N], bool blancas) {
                 if (df == -1 && (dc == 1 || dc == -1)) return true;
             }
 
-            // Caballo
+            // Caballo (ayuda con chatgpt)
             if (pieza == 'h' || pieza == 'H') {
                 if ((abs(df) == 2 && abs(dc) == 1) || (abs(df) == 1 && abs(dc) == 2)) return true;
             }
